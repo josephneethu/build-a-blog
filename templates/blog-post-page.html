@@ -1,0 +1,12 @@
+{% extends "htmlHeader.html"}
+{% block content}
+
+{% for blog in blogs %}
+
+<div class = "blog">
+    <a href ="blog-title">{{blog.title}}</a>
+    <pre class ="blogpost-field">{{blog.blogpost}}</pre>
+    <a name ="#blog-title"></a>
+</div>
+{% endfor %}
+{% endblock %}
