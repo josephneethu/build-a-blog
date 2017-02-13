@@ -1,10 +1,8 @@
 {% extends "htmlHeader.html" %}
 
     {% block content %}
-
-        <a href ="home"><h3>Home</h3></a>
-        <a href = "newblogpost"><h3>New blog post</h3></a>
-        <form action = '/' method = 'post'>
+        <h2> New Post<h2>
+        <form action = '/newpost' method = 'post'>
             <label>
                 <div>title</div>
                 <input type = "text" name = "title" value = "{{title}}">

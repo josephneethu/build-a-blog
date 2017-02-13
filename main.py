@@ -41,10 +41,13 @@ class Blog(db.Model):
     created = db.DateTimeProperty(auto_now_add = True)
 
 class MainHandler(Handler):
-    def render_front(self,title ="",blogpost = "",error=""):
-        blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC")
-        self.render("blog-front-page.html",title = title,blogpost = blogpost,error= error,blogs = blogs )
+     def get(self):
+         self.render("welcomepage.html")
 
+
+class NewPostHandler(Handler):
+    def render_front(self,title ="",blogpost = "",error=""):
+        self.render("blog-front-page.html",title = title,blogpost = blogpost,error= error )
     def get(self):
         self.render_front()
 
@@ -54,11 +57,36 @@ class MainHandler(Handler):
          if title and blogpost :
              blog =Blog(title = title,blogpost = blogpost)
              blog.put()
-             self.redirect("/")
+             page= str(blog.key().id())
+             self.redirect("/blog/+page")
          else:
-             error = "we need both fields --> please enter a title and art"
+             error = "Please enter a title and content!! Both fields are mandatory"
              self.render_front(title,blogpost,error)
 
+
+class PostHandler(Handler):
+        def render_front(self):
+            blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC")
+            self.render("blog-post-page.html",blogs = blogs )
+
+        def get(self):
+            self.render_front()
+
+class ViewPostHandler(webapp2.RequestHandler):
+    def render_front(self):
+        blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC")
+        self.render("blog-post-page.html",blogs = blogs )
+
+    def get(self, id):
+        blog =Blog.get_by_id (id)
+        if blog:
+            self.render_front()
+        else:
+            self.renderError(404)
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/',MainHandler),
+    ('/blog',PostHandler),
+    ('/newpost',NewPostHandler),
+    webapp2.Route('/blog/<id:\d+>', ViewPostHandler),
 ], debug=True)
