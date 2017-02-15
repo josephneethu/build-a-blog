@@ -4,7 +4,7 @@
         <title>Blog</title>
         <style type = "text/css">
         body {
-            font-family:cursive;;
+            font-family:sans-serif;
             width: 800px;
             padding: 10px;
         }
@@ -15,34 +15,52 @@
 
         label {
             display: block;
-            font-size: 20px;
+            font-size: 18px;
+            color: #001a4d
+
         }
 
         input[type=text] {
             width: 400px;
             font-size: 20px;
             padding: 2px;
+            color: #001a4d
         }
 
         textarea {
             width: 400px;
             height: 200px;
+            padding: 2px;
             font-size: 17px;
             font-family: monospace;
         }
         input[type=submit] {
-            font-size: 24px;
+            font-size: 22px;
         }
-        
+
+        div a {
+            font-size: 20px;
+            padding: 2px;
+            text-decoration: none;
+        }
+        nav a{
+            font-size:24px;
+            padding :2px;
+        }
+        div div{
+            font-size: 20px;
+            padding: 2px;
+        }
         </style>
     </head>
     <body>
-        <h2><marquee> Blog.....Blog .......Blog.......Blog</marquee><h2>
-        <br>
+        <h1><marquee> Blog.....Blog .......Blog.......Blog</marquee></h1>
             <nav>
                 <a href = "/blog"> Home</a>
+                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 <a href = "/newpost">New Post</a>
             </nav>
+        <br>
         <br>
         {% block content %}
 

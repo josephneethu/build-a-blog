@@ -58,7 +58,7 @@ class NewPostHandler(Handler):
              blog =Blog(title = title,blogpost = blogpost)
              blog.put()
              page= str(blog.key().id())
-             self.redirect("/blog/+page")
+             self.redirect('/blog/'+page)
          else:
              error = "Please enter a title and content!! Both fields are mandatory"
              self.render_front(title,blogpost,error)
@@ -66,23 +66,23 @@ class NewPostHandler(Handler):
 
 class PostHandler(Handler):
         def render_front(self):
-            blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC")
+            blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC LIMIT 5 ")
             self.render("blog-post-page.html",blogs = blogs )
 
         def get(self):
             self.render_front()
 
 class ViewPostHandler(webapp2.RequestHandler):
-    def render_front(self):
-        blogs = db.GqlQuery("SELECT * FROM Blog ORDER BY created DESC")
-        self.render("blog-post-page.html",blogs = blogs )
 
     def get(self, id):
-        blog =Blog.get_by_id (id)
-        if blog:
-            self.render_front()
-        else:
+        blog =Blog.get_by_id (int(id))
+        if  not blog:
+
             self.renderError(404)
+        else:
+             t = jinja_env.get_template('viewpost.html')
+             content = t.render(blog = blog)
+             self.response.write(content)
 
 app = webapp2.WSGIApplication([
     ('/',MainHandler),
